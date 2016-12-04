@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    consul:
+      host: 192.168.0.129
+      discovery:
+        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+        heartbeat:
+          enabled: true
+      config:
+        prefix: apps
+        default-context: config
+        watch:
+          wait-time: 10
+  application:
+    name: consul-sample

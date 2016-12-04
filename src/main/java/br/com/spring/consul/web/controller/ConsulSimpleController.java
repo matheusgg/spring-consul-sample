@@ -1,25 +1,24 @@
 package br.com.spring.consul.web.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import br.com.spring.consul.properties.ConsulSampleProperties;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Created on 23/03/2016.
- */
 @RestController
-@RequestMapping(method = GET, produces = APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
+@RequestMapping(method = GET, produces = TEXT_PLAIN_VALUE)
 public class ConsulSimpleController {
 
-	@Value("${someKey}")
-	private String someProperty;
+	private final ConsulSampleProperties properties;
 
-	@RequestMapping(method = GET, value = "property")
-	public String property() {
-		return this.someProperty;
+	@RequestMapping("/hello")
+	public String hello() {
+		return this.properties.getName() + " " + this.properties.getSpecificProperty();
 	}
 
 }
