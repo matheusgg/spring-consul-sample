@@ -79,6 +79,62 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!--
+				 Por padrão, o plugin do Spotify copia tudo que está na pasta dockerDirectory para dentro da target/docker:
+				 - https://github.com/spotify/docker-maven-plugin
+
+			 	 Como este comportamento não é desejado, foi utilizado o plugin do io.fabric8:
+			 	 - https://github.com/fabric8io/docker-maven-plugin
+			 	 - https://dmp.fabric8.io/
+			-->
+			<!--<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>${project.artifactId}</imageName>
+					<dockerDirectory>${project.basedir}</dockerDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<forceTags>true</forceTags>
+							<imageTags>
+								<imageTag>latest</imageTag>
+							</imageTags>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>-->
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.18.1</version>
+				<configuration>
+					<images>
+						<image>
+							<name>${project.artifactId}:latest</name>
+							<build>
+								<dockerFileDir>${project.basedir}</dockerFileDir>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -1,14 +1,16 @@
 spring:
+  profiles:
+    active: master
   cloud:
     consul:
-      host: 192.168.0.129
+      host: 127.0.0.1
       discovery:
         instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
         heartbeat:
           enabled: true
       config:
-        prefix: apps
-        default-context: config
+        prefix: spring-config-repo/${spring.profiles.active}
+        format: files
         watch:
           wait-time: 10
   application:

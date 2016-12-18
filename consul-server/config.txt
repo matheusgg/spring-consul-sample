@@ -1,0 +1,14 @@
+==========> Git2Consul
+git2consul --endpoint 172.18.0.20 --port 32781
+
+==========> Creates a docker network
+docker network create --subnet=172.18.0.0/16 consul
+
+==========> Start a container for test
+docker run --rm --net=consul --ip=172.18.0.20 -it -p 32781:32781 -p 32774:32774/tcp -p 32774:32774/udp -p 32782:32782 -p 32785:32785 -p 32776:32776/tcp -p 32776:32776/udp -p 32775:32775/tcp -p 32775:32775/udp -v /Users/Matheus/Downloads:/Downloads ubuntu /bin/bash
+
+==========> Start the Consul Server container
+docker run --rm --net=consul --ip=172.18.0.20 -it -p 32781:32781 -p 32774:32774/tcp -p 32774:32774/udp -p 32782:32782 -p 32785:32785 -p 32776:32776/tcp -p 32776:32776/udp -p 32775:32775/tcp -p 32775:32775/udp -e "DC=home" -e "LOG_LEVEL=INFO" -e "BOOTSTRAP_EXPECT=1" -e "NODE_NAME=consul-server1" -e "ADVERTISE=192.168.0.129" -e "JOIN=\"172.18.0.20\"" -e "DNS_PORT=32774" -e "HTTP_PORT=32781" -e "RPC_PORT=32782" -e "SERF_LAN_PORT=32776" -e "SERF_WAN_PORT=32775" -e "SERVER_PORT=32785" -e "GIT_INITIAL_REPO=https://github.com/matheusgg/spring-config-repo.git" -e "GIT_INITIAL_REPO_NAME=spring-config-repo" consul-server
+
+==========> Start the client app container
+docker run --rm --net=consul --ip=172.18.0.21 --name spring-consul-sample -it -p 8080:8080 -p 8600:8600 -p 8600:8600/udp -p 8500:8500 -p 8400:8400 -p 8301:8301 -p 8301:8301/udp -p 8302:8302 -p 8302:8302/udp -p 8300:8300 -e "JOIN=172.18.0.20:32776" -e "DC=home" -e "NODE_NAME=spring-consul-sample" spring-consul-sample

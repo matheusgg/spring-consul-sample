@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.Data;
 
 @Data
-@ConfigurationProperties("apps.consul-sample")
+@ConfigurationProperties("br.com.spring.consul.properties")
 public class ConsulSampleProperties {
 
 	private String name;
