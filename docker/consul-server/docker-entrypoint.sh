@@ -69,8 +69,4 @@ GIT_2_CONSUL_CONFIG="{
 
 curl -X PUT -H "Content-Type: application/json" -d "$GIT_2_CONSUL_CONFIG" "http://$BIND_INTERFACE:$HTTP_PORT/v1/kv/git2consul/config"
 
-eval "git2consul --endpoint $BIND_INTERFACE --port $HTTP_PORT & "
-
-while :; do
-  sleep 60
-done
+eval "git2consul --endpoint $BIND_INTERFACE --port $HTTP_PORT"
