@@ -4,34 +4,32 @@ CONFIG_FILE="/tmp/consul-server-config.json"
 
 /bin/cat <<EOM >$CONFIG_FILE
 {
-  "datacenter": "$DC",
+  "datacenter": "${DC}",
   "data_dir": "/tmp/consul",
-  "log_level": "$LOG_LEVEL",
-  "node_name": "$NODE_NAME",
+  "log_level": "${LOG_LEVEL}",
+  "node_name": "${NODE_NAME}",
   "server": true,
-  "bootstrap_expect": $BOOTSTRAP_EXPECT,
+  "bootstrap_expect": ${BOOTSTRAP_EXPECT},
   "check_update_interval": "10s",
   "rejoin_after_leave": true,
   "ui": true,
-  "bind_addr": "$BIND_INTERFACE",
-  "client_addr": "$BIND_INTERFACE",
-  "advertise_addr": "$ADVERTISE",
-  "retry_join": [$JOIN],
+  "bind_addr": "${BIND_INTERFACE}",
+  "client_addr": "${BIND_INTERFACE}",
+  "advertise_addr": "${ADVERTISE}",
+  "retry_join": [${JOIN}],
   "ports": {
-    "dns": $DNS_PORT,
-    "http": $HTTP_PORT,
+    "dns": ${DNS_PORT},
+    "http": ${HTTP_PORT},
     "https": -1,
-    "rpc": $RPC_PORT,
-    "serf_lan": $SERF_LAN_PORT,
-    "serf_wan": $SERF_WAN_PORT,
-    "server": $SERVER_PORT
+    "rpc": ${RPC_PORT},
+    "serf_lan": ${SERF_LAN_PORT},
+    "serf_wan": ${SERF_WAN_PORT},
+    "server": ${SERVER_PORT}
   }
 }
 EOM
 
-CONSUL_COMAND="./consul agent -config-dir=/tmp & "
-
-eval $CONSUL_COMAND
+eval "./consul agent -config-dir=/tmp &"
 
 sleep 10
 
@@ -57,16 +55,20 @@ GIT_2_CONSUL_CONFIG="{
     \"branches\" : [${GIT_INITIAL_REPO_BRANCHES}],
     \"hooks\": [{
       \"type\" : \"polling\",
-      \"interval\" : \"1\"
+      \"interval\" : \"${GIT_POLLING_INTERVAL}\"
     },
     {
       \"type\" : \"github\",
-      \"port\" : $GIT_WEB_HOOK_PORT,
+      \"port\" : ${GIT_WEB_HOOK_PORT},
       \"url\" : \"/git2consul\"
     }]
   }]
 }"
 
-curl -X PUT -H "Content-Type: application/json" -d "$GIT_2_CONSUL_CONFIG" "http://$BIND_INTERFACE:$HTTP_PORT/v1/kv/git2consul/config"
+curl -X PUT -H "Content-Type: application/json" -d "${GIT_2_CONSUL_CONFIG}" "http://${BIND_INTERFACE}:${HTTP_PORT}/v1/kv/git2consul/config"
 
-eval "git2consul --endpoint $BIND_INTERFACE --port $HTTP_PORT"
+eval "git2consul --endpoint ${BIND_INTERFACE} --port ${HTTP_PORT} &"
+
+while :; do
+    sleep 60
+done

@@ -1,34 +1,34 @@
 version: '2'
 
 services:
-  spring-consul-sample:
-    build: .
-    image: spring-consul-sample
-    depends_on:
-     - consul-server
-     - consul-server2
-    stdin_open: true
-    tty: true
-    networks:
-      consul:
-        ipv4_address: 172.18.0.20
-    ports:
-     - "8080:8080"
-     - "8300:8300"
-     - "8301:8301/tcp"
-     - "8301:8301/udp"
-     - "8302:8302/tcp"
-     - "8302:8302/udp"
-     - "8400:8400"
-     - "8500:8500"
-     - "8600:8600/tcp"
-     - "8600:8600/udp"
-    environment:
-     - DC=home
-     - JOIN=10.0.98.186:32003
-     - BOOTSTRAP_EXPECT=1
-     - NODE_NAME=spring-consul-sample
-     - DELAY=10
+#  spring-consul-sample:
+#    build: .
+#    image: spring-consul-sample
+#    depends_on:
+#     - consul-server
+#     - consul-server2
+#    stdin_open: true
+#    tty: true
+#    networks:
+#      consul:
+#        ipv4_address: 172.18.0.20
+#    ports:
+#     - "8080:8080"
+#     - "8300:8300"
+#     - "8301:8301/tcp"
+#     - "8301:8301/udp"
+#     - "8302:8302/tcp"
+#     - "8302:8302/udp"
+#     - "8400:8400"
+#     - "8500:8500"
+#     - "8600:8600/tcp"
+#     - "8600:8600/udp"
+#    environment:
+#     - DC=home
+#     - JOIN=10.0.99.99:32003
+#     - BOOTSTRAP_EXPECT=1
+#     - NODE_NAME=spring-consul-sample
+#     - DELAY=10
   consul-server:
     build: ./consul-server
     image: consul-server
@@ -52,8 +52,8 @@ services:
      - LOG_LEVEL=INFO
      - BOOTSTRAP_EXPECT=2
      - NODE_NAME=consul-server1
-     - ADVERTISE=10.0.98.186
-     - JOIN="10.0.98.186:32003","10.0.98.186:32013"
+     - ADVERTISE=10.0.99.99
+     - JOIN="10.0.99.99:32003","10.0.99.99:32013"
      - DNS_PORT=32000
      - HTTP_PORT=32001
      - RPC_PORT=32002
@@ -62,6 +62,8 @@ services:
      - SERVER_PORT=32005
      - GIT_INITIAL_REPO=https://github.com/matheusgg/spring-config-repo.git
      - GIT_INITIAL_REPO_NAME=spring-config-repo
+     - GIT_INITIAL_REPO_BRANCHES="master","docker"
+     - GIT_POLLING_INTERVAL=1
   consul-server2:
     build: ./consul-server
     image: consul-server
@@ -85,8 +87,8 @@ services:
      - LOG_LEVEL=INFO
      - BOOTSTRAP_EXPECT=2
      - NODE_NAME=consul-server2
-     - ADVERTISE=10.0.98.186
-     - JOIN="10.0.98.186:32003","10.0.98.186:32013"
+     - ADVERTISE=10.0.99.99
+     - JOIN="10.0.99.99:32003","10.0.99.99:32013"
      - DNS_PORT=32010
      - HTTP_PORT=32011
      - RPC_PORT=32012
@@ -95,6 +97,8 @@ services:
      - SERVER_PORT=32015
      - GIT_INITIAL_REPO=https://github.com/matheusgg/spring-config-repo.git
      - GIT_INITIAL_REPO_NAME=spring-config-repo
+     - GIT_INITIAL_REPO_BRANCHES="master","docker"
+     - GIT_POLLING_INTERVAL=1
 
 networks:
   consul:

@@ -1,17 +1,21 @@
+# Bus Refresh with Consul:
+# curl -X PUT -H "Content-Type: application/json" -d '{"type": "RefreshRemoteApplicationEvent", "originService": "consul-sample", "destinationService": "consul-sample:**"}' "http://localhost:32001/v1/event/fire/refresh?service=consul-sample"
 spring:
-  profiles:
-    active: master
+  application:
+    name: consul-sample
   cloud:
     consul:
       host: 127.0.0.1
+      port: 8500
       discovery:
         instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
         heartbeat:
+          # true  = a aplicação envia um heartbeat a cada 30s para o Consul
+          # false = o Consul faz requisições periódicas para determinar se o servico está de pé
           enabled: true
       config:
-        prefix: spring-config-repo/${spring.profiles.active}
+        prefix: spring-config-repo/${spring.profiles.active:master}
         format: files
         watch:
-          wait-time: 10
-  application:
-    name: consul-sample
+#          wait-time: 10
+          enabled: false
