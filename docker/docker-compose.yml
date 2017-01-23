@@ -25,7 +25,7 @@ services:
 #     - "8600:8600/udp"
 #    environment:
 #     - DC=home
-#     - JOIN=10.0.99.99:32003
+#     - JOIN=10.0.100.4:32003
 #     - BOOTSTRAP_EXPECT=1
 #     - NODE_NAME=spring-consul-sample
 #     - DELAY=10
@@ -52,8 +52,8 @@ services:
      - LOG_LEVEL=INFO
      - BOOTSTRAP_EXPECT=2
      - NODE_NAME=consul-server1
-     - ADVERTISE=10.0.99.99
-     - JOIN="10.0.99.99:32003","10.0.99.99:32013"
+     - ADVERTISE=10.0.100.4
+     - JOIN="10.0.100.4:32003","10.0.100.4:32013"
      - DNS_PORT=32000
      - HTTP_PORT=32001
      - RPC_PORT=32002
@@ -87,8 +87,8 @@ services:
      - LOG_LEVEL=INFO
      - BOOTSTRAP_EXPECT=2
      - NODE_NAME=consul-server2
-     - ADVERTISE=10.0.99.99
-     - JOIN="10.0.99.99:32003","10.0.99.99:32013"
+     - ADVERTISE=10.0.100.4
+     - JOIN="10.0.100.4:32003","10.0.100.4:32013"
      - DNS_PORT=32010
      - HTTP_PORT=32011
      - RPC_PORT=32012
